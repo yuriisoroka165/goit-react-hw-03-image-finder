@@ -1,4 +1,5 @@
 import { Component } from "react";
+import Searchbar from "./Searchbar/Searchbar";
 // import css from "./App.module.css";
 // import Modal from "./Modal";
 
@@ -19,9 +20,13 @@ class App extends Component {
     //     }
     // };
 
+    handleFormSubmit() {
+        console.log("ok");
+    }
+
     render() {
         return (
-            <h1>Test</h1>
+            <Searchbar onSubmit={this.handleFormSubmit} />
         );
     }
 }
