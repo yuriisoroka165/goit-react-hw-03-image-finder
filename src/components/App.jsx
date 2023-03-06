@@ -4,7 +4,7 @@ import ImageGallery from "./ImageGallery/ImageGallery";
 import fetchImages from "./services/image-fetch-api";
 import Button from "./Button/Button";
 import Loader from "./Loader/Loader";
-// import Modal from "./Modal";
+import Modal from "./Modal/Modal";
 
 class App extends Component {
     state = {
@@ -13,6 +13,8 @@ class App extends Component {
         queryString: "",
         error: null,
         isLoading: false,
+        isModalOpen: false,
+        imageForModal: "",
     };
 
     handleFormSubmit = queryString => {
@@ -52,15 +54,23 @@ class App extends Component {
     };
 
     handleImageClick = imageLink => {
-        console.log(`Image clicked ${imageLink}`);
+        this.setState({ imageForModal: imageLink });
+        this.toggleModal();
     };
 
     handleLoadMore = () => {
         this.getImages();
     };
 
+    toggleModal = () => {
+        this.setState(({ isModalOpen }) => ({
+            isModalOpen: !isModalOpen,
+        }));
+    };
+
     render() {
-        const { images, isLoading } = this.state;
+        const { images, queryString, isLoading, isModalOpen, imageForModal } =
+            this.state;
 
         return (
             <>
@@ -69,8 +79,13 @@ class App extends Component {
                     images={images}
                     onImageClick={this.handleImageClick}
                 />
-                {images.length > 0 && isLoading === false && <Button onClick={this.handleLoadMore} />}
+                {images.length > 0 && isLoading === false && (
+                    <Button onClick={this.handleLoadMore} />
+                )}
                 {isLoading && <Loader />}
+                {isModalOpen && (
+                    <Modal image={imageForModal} description={queryString} onClose={this.toggleModal} />
+                )}
             </>
         );
     }
