@@ -1,7 +1,7 @@
 import { Component } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
-import fetchImages from "./services/image-fetch-api";
+import fetchImages from "../services/image-fetch-api";
 import Button from "./Button/Button";
 import Loader from "./Loader/Loader";
 import Modal from "./Modal/Modal";
