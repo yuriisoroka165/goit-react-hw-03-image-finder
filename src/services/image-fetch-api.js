@@ -1,8 +1,12 @@
 import axios from "axios";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+// const API_KEY = process.env.REACT_APP_API_KEY;
 
-const fetchImages = async (query, page, key = API_KEY) => {
+const fetchImages = async (
+    query,
+    page,
+    key = process.env.REACT_APP_API_KEY
+) => {
     const { data } = await axios.get(
         `https://pixabay.com/api/?q=${query}&page=${page}&key=${key}&image_type=photo&orientation=horizontal&per_page=12`,
         { withCredentials: false }
