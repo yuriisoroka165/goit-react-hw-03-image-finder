@@ -1,5 +1,6 @@
 import axios from "axios";
-import { API_KEY } from "./api-key";
+
+const API_KEY = process.env.API_KEY;
 
 const fetchImages = async (query, page, key = API_KEY) => {
     const { data } = await axios.get(
