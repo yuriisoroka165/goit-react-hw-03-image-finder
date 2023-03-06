@@ -1,12 +1,16 @@
-import css from "./ImageFallery.module.css";
+import css from "./ImageGallery.module.css";
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
 
-const ImageGallery = ({data}) => {
+const ImageGallery = ({ images, onImageClick }) => {
     return (
         <ul className={css.image_gallery}>
-            {data.map(({id}) => {
-                <ImageGalleryItem key={id} />;
-            })}
+            {images.map(image => (
+                <ImageGalleryItem
+                    key={image.id}
+                    image={image}
+                    onImageClick={onImageClick}
+                />
+            ))}
         </ul>
     );
 };

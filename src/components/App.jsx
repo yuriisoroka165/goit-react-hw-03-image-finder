@@ -1,32 +1,77 @@
 import { Component } from "react";
 import Searchbar from "./Searchbar/Searchbar";
-// import css from "./App.module.css";
+import ImageGallery from "./ImageGallery/ImageGallery";
+import fetchImages from "./services/image-fetch-api";
+import Button from "./Button/Button";
+import Loader from "./Loader/Loader";
 // import Modal from "./Modal";
 
 class App extends Component {
-    state = {};
+    state = {
+        images: [],
+        page: 1,
+        queryString: "",
+        error: null,
+        isLoading: false,
+    };
 
-    // componentDidMount() {
-    //     const contacts = localStorage.getItem("contacts");
-    //     const parsedContacts = JSON.parse(contacts);
-    //     if (parsedContacts) {
-    //         this.setState({ contacts: parsedContacts });
-    //     }
-    // };
+    handleFormSubmit = queryString => {
+        this.setState({
+            images: [],
+            page: 1,
+            queryString: queryString,
+        });
+    };
 
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (this.state.contacts !== prevState.contacts) {
-    //         localStorage.setItem("contacts", JSON.stringify(this.state.contacts))
-    //     }
-    // };
-
-    handleFormSubmit() {
-        console.log("ok");
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.queryString !== this.state.queryString) {
+            this.getImages();
+        }
     }
 
+    getImages = async () => {
+        const { queryString, page } = this.state;
+
+        try {
+            this.setState({
+                isLoading: true,
+            });
+
+            const { hits } = await fetchImages(queryString, page);
+
+            this.setState(prevState => ({
+                images: [...prevState.images, ...hits],
+                page: prevState.page + 1,
+            }));
+        } catch (error) {
+            console.log(`Fetch error: ${error}`);
+            this.setState({ error });
+        } finally {
+            this.setState({ isLoading: false });
+        }
+    };
+
+    handleImageClick = imageLink => {
+        console.log(`Image clicked ${imageLink}`);
+    };
+
+    handleLoadMore = () => {
+        this.getImages();
+    };
+
     render() {
+        const { images, isLoading } = this.state;
+
         return (
-            <Searchbar onSubmit={this.handleFormSubmit} />
+            <>
+                <Searchbar onSubmit={this.handleFormSubmit} />
+                <ImageGallery
+                    images={images}
+                    onImageClick={this.handleImageClick}
+                />
+                {images.length > 0 && isLoading === false && <Button onClick={this.handleLoadMore} />}
+                {isLoading && <Loader />}
+            </>
         );
     }
 }
