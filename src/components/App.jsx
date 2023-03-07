@@ -29,7 +29,12 @@ class App extends Component {
         if (prevState.queryString !== this.state.queryString) {
             this.getImages();
         }
-        if (this.state.page > 2) {
+
+        if (prevState.page < this.state.page) {
+            this.getImages();
+        }
+
+        if (this.state.page > 1) {
             window.scrollTo({
                 top: document.body.scrollHeight,
                 left: 0,
@@ -50,7 +55,6 @@ class App extends Component {
 
             this.setState(prevState => ({
                 images: [...prevState.images, ...hits],
-                page: prevState.page + 1,
             }));
         } catch (error) {
             console.log(`Fetch error: ${error}`);
@@ -66,27 +70,38 @@ class App extends Component {
     };
 
     handleLoadMore = () => {
-        this.getImages();
+        this.setState(prevState => ({
+            page: prevState.page + 1,
+        }));
     };
 
     toggleModal = () => {
         this.setState(({ isModalOpen }) => ({
             isModalOpen: !isModalOpen,
         }));
+        
+        if (this.state.isModalOpen) {
+            this.setState({
+                imageForModal: "",
+            });
+        }
     };
 
     render() {
         const { images, queryString, isLoading, isModalOpen, imageForModal } =
             this.state;
+        const isImages = images.length > 0;
 
         return (
             <>
                 <Searchbar onSubmit={this.handleFormSubmit} />
-                <ImageGallery
-                    images={images}
-                    onImageClick={this.handleImageClick}
-                />
-                {images.length > 0 && isLoading === false && (
+                {isImages && (
+                    <ImageGallery
+                        images={images}
+                        onImageClick={this.handleImageClick}
+                    />
+                )}
+                {isImages && isLoading === false && (
                     <Button onClick={this.handleLoadMore} />
                 )}
                 {isLoading && <Loader />}

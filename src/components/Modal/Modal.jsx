@@ -3,8 +3,6 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 
 class Modal extends Component {
-    refs = {};
-
     componentDidMount() {
         window.addEventListener("keydown", this.handleKeyDown);
     }
