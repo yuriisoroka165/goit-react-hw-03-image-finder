@@ -29,6 +29,13 @@ class App extends Component {
         if (prevState.queryString !== this.state.queryString) {
             this.getImages();
         }
+        if (this.state.page > 2) {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                left: 0,
+                behavior: "smooth",
+            });
+        }
     }
 
     getImages = async () => {
