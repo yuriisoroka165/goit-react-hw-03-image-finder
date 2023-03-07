@@ -84,7 +84,11 @@ class App extends Component {
                 )}
                 {isLoading && <Loader />}
                 {isModalOpen && (
-                    <Modal image={imageForModal} description={queryString} onClose={this.toggleModal} />
+                    <Modal
+                        image={imageForModal}
+                        description={queryString}
+                        onClose={this.toggleModal}
+                    />
                 )}
             </>
         );

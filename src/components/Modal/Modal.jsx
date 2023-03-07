@@ -1,12 +1,12 @@
 import css from "./Modal.module.css";
 import { Component } from "react";
+import PropTypes from "prop-types";
 
 class Modal extends Component {
-
+    refs = {};
 
     componentDidMount() {
         window.addEventListener("keydown", this.handleKeyDown);
-
     }
 
     componentWillUnmount() {
@@ -20,14 +20,15 @@ class Modal extends Component {
     };
 
     handleBackdropClick = event => {
-         this.props.onClose();
-         console.log("ok");
+        if (event.currentTarget === event.target) {
+            this.props.onClose();
+        }
     };
 
     render() {
         const { image, description } = this.props;
         return (
-            <div className={css.overlay}>
+            <div className={css.overlay} onClick={this.handleBackdropClick}>
                 <div className={css.modal}>
                     <img src={image} alt={description} />
                 </div>
@@ -35,5 +36,9 @@ class Modal extends Component {
         );
     }
 }
+
+Modal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+};
 
 export default Modal;

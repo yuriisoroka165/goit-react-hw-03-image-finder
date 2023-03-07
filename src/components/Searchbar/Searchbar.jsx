@@ -5,16 +5,16 @@ import { Component } from "react";
 class Searchbar extends Component {
     state = {
         queryString: "",
-    }
+    };
 
     handleInputChange = event => {
         this.setState({ queryString: event.currentTarget.value });
-    }
+    };
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.onSubmit(this.state.queryString);     
-    }
+        this.props.onSubmit(this.state.queryString);
+    };
 
     render() {
         const { queryString } = this.state;
@@ -40,7 +40,7 @@ class Searchbar extends Component {
             </header>
         );
     }
-};
+}
 
 Searchbar.propTypes = {
     onSubmit: PropTypes.func.isRequired,
